@@ -1,21 +1,35 @@
-import { View1 } from 'components/View1';
-import { View2 } from 'components/View2';
-import React from 'react';
+import { AxiosResponse } from 'axios';
+import { WelcomeMessageDTO } from 'classes/WelcomeMessageDTO';
+import React, { useEffect, useState } from 'react';
+import { NodeAPI } from 'services/Service';
+import CreateUser from 'views/CreateUser';
 import './App.css';
 
 function App() {
+  const [message, setMessage] = useState<string>('');
+
+  async function getWelcomeMessage() {
+    try {
+      const welcomeMessage: AxiosResponse<WelcomeMessageDTO> =
+        await NodeAPI.get(`${process.env.REACT_APP_API_URL}`);
+
+      console.log(welcomeMessage.data.mensagem);
+      setMessage(welcomeMessage.data.mensagem);
+    } catch (error) {
+      console.log(error);
+      setMessage('Erro na chamada da API');
+    }
+  }
+
+  useEffect(() => {
+    console.log('Renderizei meu componente');
+    getWelcomeMessage();
+  }, []);
+
   return (
-    <div style={{ backgroundColor: 'yellow' }}>
-      <View1 displayText="Test">
-        <View2 />
-        <View2 />
-        <div> Texto</div>
-        <View2 />
-        <View2 />
-        <View2 />
-      </View1>
-      <View2 />
-    </div>
+    <>
+      <CreateUser />
+    </>
   );
 }
 
