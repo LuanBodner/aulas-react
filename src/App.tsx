@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { WelcomeMessageDTO } from 'classes/WelcomeMessageDTO';
+import { WelcomeMessageDTO } from 'dtos/WelcomeMessageDTO';
 import React, { useEffect, useState } from 'react';
 import { NodeAPI } from 'services/Service';
 import CreateUser from 'views/CreateUser';
