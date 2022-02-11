@@ -1,8 +1,8 @@
 import { AxiosResponse } from 'axios';
+import { UploadImage } from 'components/UploadImage';
 import { WelcomeMessageDTO } from 'dtos/WelcomeMessageDTO';
 import React, { useEffect, useState } from 'react';
 import { NodeAPI } from 'services/Service';
-import CreateUser from 'views/CreateUser';
 import './App.css';
 
 function App() {
@@ -28,7 +28,7 @@ function App() {
 
   return (
     <>
-      <CreateUser />
+      <UploadImage />
     </>
   );
 }

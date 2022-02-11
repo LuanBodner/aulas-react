@@ -8,18 +8,32 @@ export default function CreateUser() {
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [severity, setSeverity] = useState<
+    'success' | 'info' | 'warning' | 'error'
+  >('success');
+  const [feedbackMessage, setFeedbackMessage] = useState<string>('');
 
   async function createUserHandler() {
     const userDTO = new UserDTO(name, email, password);
 
     try {
       const postResponse: AxiosResponse = await NodeAPI.post(
-        `${process.env.REACT_APP_API_URL}/usuario`,
+        `${process.env.REACT_APP_API_URL}/usuaasdasdasdasrio`,
         userDTO
       );
+      setFeedbackMessage('Usuário cadastrado com sucesso');
+      setSeverity('success');
+      setIsOpen(true);
+
+      setName('');
+      setEmail('');
+      setPassword('');
       console.log(postResponse);
     } catch (error) {
+      setFeedbackMessage('Usuário cadastrado não foi cadastrado');
+      setSeverity('error');
+      setIsOpen(true);
       console.log(error);
     }
   }
@@ -61,6 +75,7 @@ export default function CreateUser() {
             }}
           >
             <TextField
+              value={name}
               onChange={(event) => setName(event.target.value)}
               label={'Nome do usuário'}
               variant="outlined"
@@ -77,6 +92,7 @@ export default function CreateUser() {
             }}
           >
             <TextField
+              value={email}
               label={'Email'}
               variant="outlined"
               onChange={(event) => setEmail(event.target.value)}
@@ -93,6 +109,7 @@ export default function CreateUser() {
             }}
           >
             <TextField
+              value={password}
               label={'Senha'}
               variant="outlined"
               type={'password'}
@@ -129,10 +146,10 @@ export default function CreateUser() {
       >
         <Alert
           onClose={closeSnackbar}
-          severity="success"
+          severity={severity}
           sx={{ width: '100%' }}
         >
-          This is a success message!
+          {feedbackMessage}
         </Alert>
       </Snackbar>
     </div>
