@@ -1,7 +1,8 @@
 export class UserDTO {
+  id?: string;
   nome: string;
   email: string;
-  senha: string;
+  senha?: string;
 
   constructor(nome?: string, email?: string, password?: string) {
     this.nome = nome;

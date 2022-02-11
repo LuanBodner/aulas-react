@@ -1,5 +1,5 @@
 import { Button } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 export function UploadImage() {
   const uploadFile: any = useRef();
@@ -10,13 +10,11 @@ export function UploadImage() {
   }
 
   function handleFile(event: any) {
-    console.log(event.target.files);
     parseFileToBase64(event.target.files);
   }
 
   function parseFileToBase64(files: Array<File>) {
     const parsedFiles: Array<string> = new Array<string>();
-    console.log(files);
 
     for (const file of files) {
       file.text().then(() => {
@@ -25,17 +23,15 @@ export function UploadImage() {
         reader.onloadend = () => {
           const document: string | ArrayBuffer | null = reader.result;
           if (typeof document === 'string') {
-            parsedFiles.push(document);
+            parsedFiles.push(
+              document.slice(document.lastIndexOf(',') + 1, document.length)
+            );
             setImages([...parsedFiles]);
           }
         };
       });
     }
   }
-
-  useEffect(() => {
-    console.log(images);
-  }, [images]);
 
   return (
     <div
@@ -56,9 +52,10 @@ export function UploadImage() {
         />
 
         {images !== undefined && images.length > 1 ? (
-          images.map((image) => {
+          images.map((image, index) => {
             return (
               <div
+                key={`div-${index}`}
                 style={{
                   backgroundColor: 'red',
                   height: '100px',
@@ -66,6 +63,7 @@ export function UploadImage() {
                 }}
               >
                 <img
+                  key={`img-${index}`}
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   src={`data:image/jpeg;base64,${image}`}
                   alt=""
