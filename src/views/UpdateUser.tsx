@@ -1,46 +1,56 @@
-import { Alert, Button, Snackbar, TextField } from '@mui/material';
-import { AxiosResponse } from 'axios';
+import { Button, TextField } from '@mui/material';
 import { UserDTO } from 'dtos/UserDTO';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router';
 import { NodeAPI } from 'services/Service';
 
-export default function CreateUser() {
+export function UpdateUser() {
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [severity, setSeverity] = useState<
-    'success' | 'info' | 'warning' | 'error'
-  >('success');
-  const [feedbackMessage, setFeedbackMessage] = useState<string>('');
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-  async function createUserHandler() {
-    const userDTO = new UserDTO(name, email, password);
-
+  async function deleteUserById() {
     try {
-      const postResponse: AxiosResponse = await NodeAPI.post(
-        `${process.env.REACT_APP_API_URL}/usuaasdasdasdasrio`,
-        userDTO
-      );
-      setFeedbackMessage('Usuário cadastrado com sucesso');
-      setSeverity('success');
-      setIsOpen(true);
-
-      setName('');
-      setEmail('');
-      setPassword('');
-      console.log(postResponse);
+      await NodeAPI.delete(`${process.env.REACT_APP_API_URL}/usuario/${id}`);
+      navigate('/users');
     } catch (error) {
-      setFeedbackMessage('Usuário cadastrado não foi cadastrado');
-      setSeverity('error');
-      setIsOpen(true);
       console.log(error);
     }
   }
 
-  function closeSnackbar() {
-    setIsOpen(false);
+  async function updateUserById() {
+    const updatedUser = new UserDTO(name, email, password, Number(id));
+
+    try {
+      await NodeAPI.put(
+        `${process.env.REACT_APP_API_URL}/usuario/${id}`,
+        updatedUser
+      );
+      navigate('/users');
+    } catch (error) {
+      console.log(error);
+    }
   }
+
+  async function getUserById() {
+    try {
+      const response = await NodeAPI.get(
+        `${process.env.REACT_APP_API_URL}/usuario/${id}`
+      );
+
+      setName(response.data.nome);
+      setEmail(response.data.email);
+      setPassword(response.data.senha);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getUserById();
+  }, []);
 
   return (
     <div
@@ -124,28 +134,30 @@ export default function CreateUser() {
                 height: '50px',
                 width: '100px',
               }}
-              onClick={createUserHandler}
+              onClick={() => {
+                updateUserById();
+              }}
             >
-              {'Criar'}
+              {'Atualizar'}
+            </Button>
+
+            <Button
+              variant={'contained'}
+              style={{
+                backgroundColor: 'red',
+                marginLeft: '20px',
+                height: '50px',
+                width: '100px',
+              }}
+              onClick={() => {
+                deleteUserById();
+              }}
+            >
+              {'Deletar'}
             </Button>
           </div>
         </div>
       </div>
-
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={isOpen}
-        autoHideDuration={6000}
-        onClose={closeSnackbar}
-      >
-        <Alert
-          onClose={closeSnackbar}
-          severity={severity}
-          sx={{ width: '100%' }}
-        >
-          {feedbackMessage}
-        </Alert>
-      </Snackbar>
     </div>
   );
 }

@@ -10,6 +10,8 @@ import {
 import { Box } from '@mui/system';
 import React from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
+import { ListUsers } from 'views/ListUsers';
+import { UpdateUser } from 'views/UpdateUser';
 import './App.css';
 
 function App() {
@@ -34,6 +36,7 @@ function App() {
           variant="permanent"
           sx={{
             flexShrink: 0,
+            width: 240,
             [`& .MuiDrawer-paper`]: {
               width: 240,
               zIndex: 1,
@@ -66,11 +69,18 @@ function App() {
         </Drawer>
         <Box
           component="main"
-          sx={{ flexGrow: 1, paddingTop: '1.5%', paddingLeft: '15%' }}
+          sx={{
+            flexGrow: 1,
+            paddingTop: '1.5%',
+            paddingLeft: '3%',
+            paddingRight: '2%',
+          }}
         >
           <Toolbar />
           <Routes>
             <Route path="/" element={<>Texto qualquer</>} />
+            <Route path="/users" element={<ListUsers />} />
+            <Route path="/user/:id" element={<UpdateUser />} />
           </Routes>
         </Box>
       </Box>
