@@ -7,8 +7,8 @@ import './index.css';
 
 ReactDOM.render(
   <React.StrictMode>
+    <CssBaseline />
     <BrowserRouter>
-      <CssBaseline />
       <App />
     </BrowserRouter>
   </React.StrictMode>,
