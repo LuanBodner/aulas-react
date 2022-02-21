@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import { Box } from '@mui/system';
+import { SnackbarProvider } from 'contexts/Snack';
 import React from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import { ListUsers } from 'views/ListUsers';
@@ -16,9 +17,9 @@ import './App.css';
 
 function App() {
   const tabs = new Array<string>('Pagina inicial', 'Usuarios', 'Notas');
-
+  console.log('App');
   return (
-    <>
+    <SnackbarProvider>
       <Box sx={{ display: 'flex' }}>
         <AppBar
           sx={{
@@ -84,7 +85,7 @@ function App() {
           </Routes>
         </Box>
       </Box>
-    </>
+    </SnackbarProvider>
   );
 }
 

@@ -1,4 +1,3 @@
-import { CssBaseline } from '@mui/material';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
@@ -7,7 +6,6 @@ import './index.css';
 
 ReactDOM.render(
   <React.StrictMode>
-    <CssBaseline />
     <BrowserRouter>
       <App />
     </BrowserRouter>
