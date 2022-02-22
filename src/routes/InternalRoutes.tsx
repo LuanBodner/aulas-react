@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Link, Navigate, Route, Routes } from 'react-router-dom';
 import { ListUsers } from 'views/InternalViews/ListUsers';
 import { UpdateUser } from 'views/InternalViews/UpdateUser';
 
@@ -79,6 +79,7 @@ export function InternalRoutes() {
           <Routes>
             <Route path="/users" element={<ListUsers />} />
             <Route path="/user/:id" element={<UpdateUser />} />
+            <Route path="*" element={<Navigate to={'/users'} />} />
           </Routes>
         </Box>
       </Box>

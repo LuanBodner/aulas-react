@@ -28,13 +28,12 @@ export function Login() {
       );
 
       setToken(response.data.token);
-      console.log(response.data.token);
+      window.location.href = '/';
     } catch (error) {
       removeToken();
       setFeedbackMessage('Email ou senha inválidos');
       setSeverity('error');
       setIsOpen(true);
-      console.log(error);
     }
   }
 

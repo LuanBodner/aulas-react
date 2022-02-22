@@ -29,12 +29,10 @@ export default function CreateUser() {
       setName('');
       setEmail('');
       setPassword('');
-      console.log(postResponse);
     } catch (error) {
       setFeedbackMessage('Usuário cadastrado não foi cadastrado');
       setSeverity('error');
       setIsOpen(true);
-      console.log(error);
     }
   }
 

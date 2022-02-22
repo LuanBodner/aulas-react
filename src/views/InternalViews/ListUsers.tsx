@@ -31,9 +31,7 @@ export function ListUsers() {
       setSeverity('success');
       setFeedbackMessage('Lista de usuários foi carregada com sucesso');
       setIsOpen(true);
-      console.log([...list.data]);
     } catch (error) {
-      console.log(error);
       setSeverity('error');
       setFeedbackMessage('Não foi possível buscar os dados dos usuários');
       setIsOpen(true);

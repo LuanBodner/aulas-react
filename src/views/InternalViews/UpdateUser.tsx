@@ -3,7 +3,7 @@ import {
   Button,
   CircularProgress,
   Snackbar,
-  TextField,
+  TextField
 } from '@mui/material';
 import { UserDTO } from 'dtos/UserDTO';
 import React, { useEffect, useState } from 'react';
