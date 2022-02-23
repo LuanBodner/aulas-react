@@ -1,20 +1,39 @@
+import AccountCircle from '@mui/icons-material/AccountCircle';
 import {
   AppBar,
   Drawer,
+  IconButton,
   List,
   ListItem,
   ListItemText,
   Toolbar,
   Typography,
 } from '@mui/material';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import { Box } from '@mui/system';
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, Navigate, Route, Routes } from 'react-router-dom';
+import { removeToken } from 'utils/Utils';
 import { ListUsers } from 'views/InternalViews/ListUsers';
 import { UpdateUser } from 'views/InternalViews/UpdateUser';
 
 export function InternalRoutes() {
   const tabs = new Array<string>('Pagina inicial', 'Usuarios', 'Notas');
+  const [anchorEl, setAnchorEl] = useState<HTMLElement>(null);
+
+  function handleIconButtonClick(event) {
+    setAnchorEl(event.currentTarget);
+  }
+
+  function handleMenuClose() {
+    setAnchorEl(null);
+  }
+
+  function handleLogout() {
+    removeToken();
+    window.location.href = '/';
+  }
 
   return (
     <>
@@ -26,9 +45,40 @@ export function InternalRoutes() {
           }}
         >
           <Toolbar>
-            <Typography variant={'h5'} color={'black'}>
-              Sistema de notas
-            </Typography>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                width: '100vw',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Typography variant={'h5'} color={'black'}>
+                  Sistema de notas
+                </Typography>
+              </div>
+
+              <div>
+                <IconButton onClick={handleIconButtonClick}>
+                  <AccountCircle style={{ width: '40px', height: '40px' }} />
+                </IconButton>
+              </div>
+            </div>
+            <Menu
+              anchorEl={anchorEl}
+              open={anchorEl ? true : false}
+              onClose={() => {
+                handleMenuClose();
+              }}
+            >
+              <MenuItem
+                onClick={() => {
+                  handleLogout();
+                }}
+              >
+                Sair
+              </MenuItem>
+            </Menu>
           </Toolbar>
         </AppBar>
         <Drawer
