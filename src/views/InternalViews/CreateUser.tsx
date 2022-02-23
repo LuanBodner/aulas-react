@@ -1,5 +1,6 @@
-import { Alert, Button, Snackbar, TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import { AxiosResponse } from 'axios';
+import { useSnackbar } from 'contexts/SnackbarContext';
 import { UserDTO } from 'dtos/UserDTO';
 import React, { useState } from 'react';
 import { NodeAPI } from 'services/Service';
@@ -8,11 +9,7 @@ export default function CreateUser() {
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [severity, setSeverity] = useState<
-    'success' | 'info' | 'warning' | 'error'
-  >('success');
-  const [feedbackMessage, setFeedbackMessage] = useState<string>('');
+  const snackbar = useSnackbar();
 
   async function createUserHandler() {
     const userDTO = new UserDTO(name, email, password);
@@ -22,22 +19,23 @@ export default function CreateUser() {
         `${process.env.REACT_APP_API_URL}/usuaasdasdasdasrio`,
         userDTO
       );
-      setFeedbackMessage('Usuário cadastrado com sucesso');
-      setSeverity('success');
-      setIsOpen(true);
+
+      snackbar.create({
+        isOpen: true,
+        message: 'Usuário cadastrado com sucesso',
+        type: 'success',
+      });
 
       setName('');
       setEmail('');
       setPassword('');
     } catch (error) {
-      setFeedbackMessage('Usuário cadastrado não foi cadastrado');
-      setSeverity('error');
-      setIsOpen(true);
+      snackbar.create({
+        isOpen: true,
+        message: 'Usuário cadastrado não foi cadastrado',
+        type: 'error',
+      });
     }
-  }
-
-  function closeSnackbar() {
-    setIsOpen(false);
   }
 
   return (
@@ -129,21 +127,6 @@ export default function CreateUser() {
           </div>
         </div>
       </div>
-
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={isOpen}
-        autoHideDuration={6000}
-        onClose={closeSnackbar}
-      >
-        <Alert
-          onClose={closeSnackbar}
-          severity={severity}
-          sx={{ width: '100%' }}
-        >
-          {feedbackMessage}
-        </Alert>
-      </Snackbar>
     </div>
   );
 }

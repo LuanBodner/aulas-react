@@ -77,9 +77,11 @@ export function InternalRoutes() {
         >
           <Toolbar />
           <Routes>
+            <Route path="/" element={<>Pagina inicial</>} />
+            <Route path="/notas" element={<>Notas</>} />
             <Route path="/users" element={<ListUsers />} />
             <Route path="/user/:id" element={<UpdateUser />} />
-            <Route path="*" element={<Navigate to={'/users'} />} />
+            <Route path="*" element={<Navigate to={'/'} />} />
           </Routes>
         </Box>
       </Box>

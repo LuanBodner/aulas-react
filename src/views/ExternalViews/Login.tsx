@@ -1,5 +1,6 @@
-import { Alert, Button, Card, Snackbar, TextField } from '@mui/material';
+import { Button, Card, TextField } from '@mui/material';
 import { AxiosResponse } from 'axios';
+import { useSnackbar } from 'contexts/SnackbarContext';
 import { LoginDTO } from 'dtos/LoginDTO';
 import { TokenDTO } from 'dtos/TokenDTO';
 import React, { useState } from 'react';
@@ -9,15 +10,7 @@ import { removeToken, setToken } from 'utils/Utils';
 export function Login() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [severity, setSeverity] = useState<
-    'success' | 'info' | 'warning' | 'error'
-  >('success');
-  const [feedbackMessage, setFeedbackMessage] = useState<string>('');
-
-  function closeSnackbar() {
-    setIsOpen(false);
-  }
+  const snackbar = useSnackbar();
 
   async function handleUserLogin() {
     const data = new LoginDTO(email, password);
@@ -31,9 +24,12 @@ export function Login() {
       window.location.href = '/';
     } catch (error) {
       removeToken();
-      setFeedbackMessage('Email ou senha inválidos');
-      setSeverity('error');
-      setIsOpen(true);
+
+      snackbar.create({
+        isOpen: true,
+        type: 'error',
+        message: 'Email ou senha inválidos',
+      });
     }
   }
 
@@ -120,21 +116,6 @@ export function Login() {
           </div>
         </Card>
       </div>
-
-      <Snackbar
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        open={isOpen}
-        autoHideDuration={6000}
-        onClose={closeSnackbar}
-      >
-        <Alert
-          onClose={closeSnackbar}
-          severity={severity}
-          sx={{ width: '100%' }}
-        >
-          {feedbackMessage}
-        </Alert>
-      </Snackbar>
     </div>
   );
 }

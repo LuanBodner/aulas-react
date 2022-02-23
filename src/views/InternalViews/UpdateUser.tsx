@@ -1,10 +1,4 @@
-import {
-  Alert,
-  Button,
-  CircularProgress,
-  Snackbar,
-  TextField
-} from '@mui/material';
+import { Button, CircularProgress, TextField } from '@mui/material';
 import { UserDTO } from 'dtos/UserDTO';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
@@ -19,11 +13,6 @@ export function UpdateUser() {
   const { id } = useParams();
   const [isLoading, setIsloading] = useState<boolean>(true);
 
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [severity, setSeverity] = useState<
-    'success' | 'info' | 'warning' | 'error'
-  >('success');
-  const [feedbackMessage, setFeedbackMessage] = useState<string>('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -93,10 +82,6 @@ export function UpdateUser() {
     } finally {
       setIsloading(false);
     }
-  }
-
-  function closeSnackbar() {
-    setIsOpen(false);
   }
 
   return (
@@ -258,21 +243,6 @@ export function UpdateUser() {
           </div>
         </div>
       )}
-
-      <Snackbar
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-        open={isOpen}
-        autoHideDuration={6000}
-        onClose={closeSnackbar}
-      >
-        <Alert
-          onClose={closeSnackbar}
-          severity={severity}
-          sx={{ width: '100%' }}
-        >
-          {feedbackMessage}
-        </Alert>
-      </Snackbar>
     </>
   );
 }
